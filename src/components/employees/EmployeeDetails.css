@@ -1,0 +1,19 @@
+
+.employee--details {
+    background-color: rgb(255, 203, 236);
+    border: 1px dotted darkmagenta;
+    padding: 1rem;
+    margin: 0.5rem;
+    
+}
+
+header {
+    font-weight: bold;
+    border-bottom: 1px dotted darkmagenta;
+    margin-bottom: 0.6rem;
+}
+
+footer {
+    font-style: italic;
+    margin-top: 0.6rem;
+}

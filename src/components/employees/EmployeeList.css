@@ -1,0 +1,11 @@
+.employees{
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.employee {
+    background-color: rgb(255, 203, 236);
+    border: 1px dotted darkmagenta;
+    padding: 0.7rem;
+    margin: 0.5rem;
+}
