@@ -1,0 +1,14 @@
+
+.customer--details {
+    background-color: rgb(87, 251, 106);
+    border: 1px dotted darkmagenta;
+    padding: 1rem;
+    margin: 0.5rem;
+    
+}
+
+header {
+    font-weight: bold;
+    border-bottom: 1px dotted darkmagenta;
+    margin-bottom: 0.6rem;
+}

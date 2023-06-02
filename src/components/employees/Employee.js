@@ -4,7 +4,7 @@ export const Employee = ({id, fullName, email}) => {
     {
         return <section className="employee">
             <div>           
-                <Link className="navbar__link" to={`/employees/${id}`}>Name: {fullName}</Link>
+                <Link className="employee__link" to={`/employees/${id}`}>{fullName}</Link>
            </div>
             <div>Email: {email}</div>
 
