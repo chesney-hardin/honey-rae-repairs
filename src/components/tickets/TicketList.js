@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import "./Tickets.css"
 import { Link, useNavigate } from "react-router-dom"
+import { Ticket } from "./Ticket"
 
 export const TicketList = ({ searchTermState }) => {
     const [tickets, setTickets] = useState([])
+    const [employees, setEmployees] = useState([])
     const [filteredTickets, setFiltered] = useState([])
     const [emergency, setEmergency] = useState(false)
     const [openOnly, updateOpenOnly] = useState(false)
@@ -37,10 +39,16 @@ export const TicketList = ({ searchTermState }) => {
 
     useEffect(
         () => {
-            fetch('http://localhost:8088/serviceTickets')
+            fetch('http://localhost:8088/serviceTickets?_embed=employeeTickets')
                 .then(response => response.json())
                 .then((ticketArray) => {
                     setTickets(ticketArray)
+                })
+
+                fetch('http://localhost:8088/employees?_expand=user')
+                .then(response => response.json())
+                .then((employeeArray) => {
+                    setEmployees(employeeArray)
                 })
         },
         [] // When this array is empty, you are observing initial component state
@@ -97,15 +105,7 @@ export const TicketList = ({ searchTermState }) => {
         <article className="tickets">
             {
                 filteredTickets.map(
-                    (ticket) => {
-                        return <section className="ticket" key={`ticket--${ticket.id}`}>
-                            <header>
-                                <Link to={`/tickets/${ticket.id}/edit`}>Ticket {ticket.id}</Link>
-                            </header>
-                            <section>{ticket.description}</section>
-                            <footer>Emergency: {ticket.emergency ? "🧨" : "No"}</footer>
-                        </section>
-                    }
+                    (ticket) => <Ticket employees={employees} ticketObject={ticket} isStaff={honeyUserObject.staff}/>
                 )
             }
 
