@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 export const Ticket = ({ ticketObject, currentUser, employees, getAllTheTickets }) => {
 
     // The assigned employee for the current ticket
-    let assignedEmployee = null 
+    let assignedEmployee = null
 
     if (ticketObject.employeeTickets.length > 0) {
         const ticketEmployeeRelationship = ticketObject.employeeTickets[0]
@@ -15,14 +15,29 @@ export const Ticket = ({ ticketObject, currentUser, employees, getAllTheTickets 
 
     // Conditional to decide if close button should be displayed
     const canClose = () => {
-        if(assignedEmployee?.id === userEmployee?.id && ticketObject.dateCompleted === "") {
-            return <button 
+        if (currentUser.staff === true && assignedEmployee?.id === userEmployee?.id && ticketObject.dateCompleted === "") {
+            return <button
                 onClick={closeTicket}
                 className="ticket__finish">Finish</button>
         }
         else {
             return ""
         }
+
+    }
+
+    const deleteTicket = () => {
+        return !currentUser.staff ? (
+            <button
+                onClick={() => {
+                    fetch(`http://localhost:8088/serviceTickets/${ticketObject.id}`, {
+                        method: "DELETE",
+                    })
+                        .then(getAllTheTickets)
+
+                }} className="button__delete"
+            >Delete</button>
+        ) : ""
 
     }
 
@@ -41,32 +56,33 @@ export const Ticket = ({ ticketObject, currentUser, employees, getAllTheTickets 
             },
             body: JSON.stringify(copy)
         })
-        .then(response => response.json())
-        .then(getAllTheTickets)
+            .then(response => response.json())
+            .then(getAllTheTickets)
     }
 
     const claimButton = () => {
-        if(currentUser.staff)
-            {return <button
-            onClick={()=> {
-                fetch(`http://localhost:8088/employeeTickets`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    employeeId: userEmployee.id,
-                    serviceTicketId: ticketObject.id
-                })
-            })
-                .then(response => response.json())
-                .then(() => {
-                    getAllTheTickets()
-                })
-            }}
-            >Claim</button> }
-        else{ return null}
+        return currentUser.staff ? (
+            <button
+                onClick={() => {
+                    fetch(`http://localhost:8088/employeeTickets`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            employeeId: userEmployee.id,
+                            serviceTicketId: ticketObject.id
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(() => {
+                            getAllTheTickets()
+                        })
+                }}
+            >Claim</button>
+        ) : ""
     }
+
 
     return <section className="ticket" key={`ticket--${ticketObject.id}`}>
         <header>
@@ -81,11 +97,14 @@ export const Ticket = ({ ticketObject, currentUser, employees, getAllTheTickets 
         <footer>
             {
                 ticketObject.employeeTickets.length
-                    ? `Currently being worked on by ${assignedEmployee !== null ? assignedEmployee?.user?.fullName: ""}`
+                    ? `Currently being worked on by ${assignedEmployee !== null ? assignedEmployee?.user?.fullName : ""}`
                     : claimButton()
             }
             {
                 canClose()
+            }
+            {
+                deleteTicket()
             }
         </footer>
     </section>

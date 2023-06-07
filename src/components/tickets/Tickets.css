@@ -9,3 +9,17 @@
     padding: 0.7rem;
     margin: 0.5rem 0;
 }
+
+.button__delete {
+    align-self: flex-end;
+
+}
+
+footer{
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    margin: 5px;
+}
