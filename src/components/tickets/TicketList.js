@@ -92,15 +92,15 @@ export const TicketList = ({ searchTermState }) => {
     return <>
         {
             honeyUserObject.staff ?
-                <>
+                <div className="buttons__tickets">
                     <button onClick={() => { setEmergency(true) }}>Emergency Only</button>
                     <button onClick={() => { setEmergency(false) }}>Show All</button>
-                </>
-                : <>
+                </div>
+                : <div className="buttons__tickets">
                     <button onClick={() => navigate("/ticket/create")}>Create Ticket</button>
                     <button onClick={() => updateOpenOnly(true)}>Open Ticket</button>
                     <button onClick={() => updateOpenOnly(false)}>All My Tickets</button>
-                </>
+                </div>
         }
 
 
